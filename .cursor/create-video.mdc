@@ -1,0 +1,13 @@
+---
+alwaysApply: false
+---
+
+
+based on the chapter content create an AiVideo component that looks like that 
+
+<AiVideo
+prompt="content"
+/>
+
+and content should be the prompt that will be read by AI avatar that. It should be an entertaining form of what we have in the chapter. 
+
