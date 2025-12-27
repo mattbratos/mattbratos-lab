@@ -1,15 +1,8 @@
 ---
-title: "Awesome Mac Terminal Setup"
+title: "Mac Terminal Setup"
 description: "Step-by-step guide to transform your macOS terminal into a beautiful, powerful development environment"
 ---
 
-<AiVideo 
-  id="awesome-mac-terminal-intro"
-  script={`Hey! In this guide, we’ll turn your plain Mac terminal into a fast, beautiful, and productive workspace.
-
-We’ll pick the right terminal app, install a modern shell, add a stylish prompt, fonts, colors, and handy plugins.
-
-Follow along step by step, and customize as much or as little as you like. Let’s make your terminal awesome!`} />
 
 This guide walks you through building a beautiful, efficient terminal setup on macOS—from the terminal app and shell, to prompt, fonts, colors, and plugins.
 
@@ -51,33 +44,58 @@ The built-in **Terminal.app** is fine, but alternatives look and feel better and
 
 Popular choices:
 
-1. **iTerm2** (classic, very configurable)
-2. **Warp** (modern, AI-assisted, batteries-included)
-3. **Alacritty** or **WezTerm** (GPU-accelerated, very fast, config-driven)
+1. **Ghostty** (modern, GPU-accelerated, fast, config-driven)
+2. **iTerm2** (classic, very configurable)
+3. **Warp** (modern, AI-assisted, batteries-included)
+4. **Alacritty** or **WezTerm** (GPU-accelerated, very fast)
 
-For this guide, we’ll assume **iTerm2**, because it’s powerful and widely used. You can adapt the color/font parts to other terminals.
+For this guide, we'll use **Ghostty**, a blazingly fast, native macOS terminal app that's GPU-accelerated and highly configurable through a simple config file.
 
-### Install iTerm2
+### Install Ghostty
 
 ```bash
-brew install --cask iterm2
+brew install --cask ghostty
 ```
 
 After install:
 
-- Open **iTerm2** from Applications or Spotlight
+- Open **Ghostty** from Applications or Spotlight
 - Right-click the Dock icon → **Options → Keep in Dock** if you like
 
-### Basic iTerm2 Settings
+### Configure Ghostty
 
-Open **iTerm2 → Settings (Preferences)** and tweak:
+Ghostty uses a configuration file instead of GUI settings. Create the config directory and file:
 
-- **General → Closing**: Check "Confirm closing multiple sessions"
-- **Profiles → General**: Set **Working Directory** to "Reuse previous session's directory" if you prefer
-- **Profiles → Window**: Adjust transparency or blur if you like a glassy effect
-- **Profiles → Keys**: Ensure **Left/Right Option Key** acts as `+Esc` (handy for keybindings in vim/tmux, etc.)
+```bash
+mkdir -p ~/.config/ghostty
+touch ~/.config/ghostty/config
+```
 
-We’ll return here later for fonts and colors.
+Open the config file in your favorite editor:
+
+```bash
+nano ~/.config/ghostty/config
+```
+
+Add some basic settings to start:
+
+```bash
+# Theme
+theme = dark
+
+# Window settings
+window-padding-x = 10
+window-padding-y = 10
+
+# Transparency (0-100, where 100 is fully opaque)
+background-opacity = 0.95
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+```
+
+Save the file. Ghostty will automatically reload when you change the config. We'll add font and color settings in the next steps.
 
 ## Step 2: Use zsh as Your Shell
 
@@ -116,12 +134,27 @@ brew install --cask font-meslo-lg-nerd-font
 brew install --cask font-fira-code-nerd-font
 ```
 
-### Set the Font in iTerm2
+### Set the Font in Ghostty
 
-1. Open **iTerm2 → Settings → Profiles → Text**
-2. Under **Font**, click **Change Font**
-3. Choose `MesloLGS NF` or `FiraCode Nerd Font`
-4. Enable **Use a different font for non-ASCII text** and pick the same font (optional but avoids mismatch)
+Open your Ghostty config file:
+
+```bash
+nano ~/.config/ghostty/config
+```
+
+Add the font settings:
+
+```bash
+# Font configuration
+font-family = "MesloLGS Nerd Font"
+font-size = 14
+
+# Or if you prefer FiraCode:
+# font-family = "FiraCode Nerd Font"
+# font-size = 14
+```
+
+Save the file. Ghostty will automatically reload and apply the new font.
 
 Now your terminal can display icons and powerline symbols correctly.
 
@@ -266,30 +299,85 @@ Now you should see:
 
 A good color scheme makes your terminal easier to read and more pleasant to look at.
 
-### Import a Color Scheme into iTerm2
+### Configure Colors in Ghostty
 
-You can download popular schemes:
+Ghostty comes with many built-in themes. You can see available themes by running:
 
-- **Dracula**: <https://github.com/dracula/iterm>
-- **One Dark**: search "One Dark iTerm2 color scheme"
-- **Solarized Dark**: <https://ethanschoonover.com/solarized/>
+```bash
+ghostty +list-themes
+```
 
-For Dracula, for example:
+To use a built-in theme, add this to your `~/.config/ghostty/config`:
 
-1. Download the `.itermcolors` file from the repo
-2. In iTerm2, open **Settings → Profiles → Colors**
-3. Click **Color Presets… → Import…**
-4. Choose the downloaded `.itermcolors` file
-5. Select the new preset from the dropdown
+```bash
+# Popular built-in themes:
+theme = "GruvboxDark"
+# or
+theme = "Dracula"
+# or
+theme = "OneDark"
+# or
+theme = "TokyoNight"
+```
 
-### Optional: Adjust Transparency
+### Custom Color Schemes
 
-In **Settings → Profiles → Window**:
+You can also define custom colors in your config file. Here's an example with the popular Catppuccin Mocha theme:
 
-- Adjust the **Transparency** slider
-- Enable **Blur** to make background text less distracting
+```bash
+# Background and foreground
+background = 1e1e2e
+foreground = cdd6f4
 
-Use transparency sparingly; too much makes text hard to read.
+# Cursor
+cursor-color = f5e0dc
+
+# Black
+palette = 0=45475a
+palette = 8=585b70
+
+# Red
+palette = 1=f38ba8
+palette = 9=f38ba8
+
+# Green
+palette = 2=a6e3a1
+palette = 10=a6e3a1
+
+# Yellow
+palette = 3=f9e2af
+palette = 11=f9e2af
+
+# Blue
+palette = 4=89b4fa
+palette = 12=89b4fa
+
+# Magenta
+palette = 5=f5c2e7
+palette = 13=f5c2e7
+
+# Cyan
+palette = 6=94e2d5
+palette = 14=94e2d5
+
+# White
+palette = 7=bac2de
+palette = 15=a6adc8
+```
+
+### Adjust Transparency
+
+We already set transparency earlier, but you can fine-tune it in your config:
+
+```bash
+# Background opacity (0.0 - 1.0)
+background-opacity = 0.95
+
+# Window blur
+background-blur-radius = 20
+```
+
+Use transparency sparingly; too much makes text hard to read. A value between 0.90-0.98 usually looks great.
 
 ## Step 8: Quality-of-Life Aliases and Functions
 
@@ -353,7 +441,8 @@ Once you like your setup, keep it safe.
 
 Key files to back up:
 
-- `~/.zshrc`
+- `~/.config/ghostty/config` (Ghostty configuration)
+- `~/.zshrc` (zsh configuration)
 - `~/.p10k.zsh` (Powerlevel10k config)
 - `~/.tmux.conf` (if using tmux)
 - Any custom scripts or functions in `~/.oh-my-zsh/custom/`
@@ -364,6 +453,7 @@ You can create a simple Git repo to sync config across machines:
 mkdir -p ~/dotfiles
 cd ~/dotfiles
 
+cp ~/.config/ghostty/config ghostty-config
 cp ~/.zshrc .
 cp ~/.p10k.zsh . 2>/dev/null || true
 cp ~/.tmux.conf . 2>/dev/null || true
@@ -373,20 +463,21 @@ git add .
 git commit -m "My Mac terminal setup"
 ```
 
-Push this to a private GitHub repo and pull it on other machines.
+Push this to a private GitHub repo and pull it on other machines. When restoring, remember to put the `ghostty-config` file back to `~/.config/ghostty/config`.
 
 ## Common Pitfalls and Fixes
 
 ### Icons or Symbols Look Broken
 
-- Ensure you selected a **Nerd Font** in iTerm2 (e.g., `MesloLGS NF`)
-- In **Profiles → Text**, set both main and non-ASCII fonts to the Nerd Font
-- Restart iTerm2 after changing fonts
+- Ensure you set a **Nerd Font** in your Ghostty config (e.g., `font-family = "MesloLGS Nerd Font"`)
+- Double-check the exact font name matches what's installed (use `brew list --cask` to verify)
+- Restart Ghostty after changing the font in the config
 
 ### Colors Look Weird or Washed Out
 
-- Confirm you applied the color preset in **Profiles → Colors**
-- Disable any conflicting themes in your shell that override colors (check `~/.zshrc`)
+- Confirm you set a theme in your `~/.config/ghostty/config` file
+- Make sure there are no conflicting color settings in your shell config (check `~/.zshrc`)
+- Try a different built-in theme using `theme = "ThemeName"`
 
 ### zsh-Autosuggestions Not Working
 
@@ -401,13 +492,14 @@ Push this to a private GitHub repo and pull it on other machines.
 
 ## Quick Recap Checklist
 
-You’ve set up an awesome Mac terminal if:
+You've set up an awesome Mac terminal if:
 
-- [ ] You’re using a modern terminal app (iTerm2, Warp, WezTerm, etc.)
+- [ ] You're using Ghostty (or another modern terminal app)
 - [ ] Your shell is `zsh`
+- [ ] Ghostty config file is set up at `~/.config/ghostty/config`
 - [ ] Oh My Zsh is installed and managing your config
 - [ ] Powerlevel10k is your theme, and the wizard completed successfully
-- [ ] A Nerd Font is set in your terminal, and icons show correctly
+- [ ] A Nerd Font is configured in Ghostty, and icons show correctly
 - [ ] Plugins like autosuggestions, syntax highlighting, and fzf work
 - [ ] You have a color scheme you love and a few useful aliases
 
