@@ -1,0 +1,420 @@
+---
+title: "Awesome Mac Terminal Setup"
+description: "Step-by-step guide to transform your macOS terminal into a beautiful, powerful development environment"
+---
+
+<AiVideo 
+  id="awesome-mac-terminal-intro"
+  script={`Hey! In this guide, we’ll turn your plain Mac terminal into a fast, beautiful, and productive workspace.
+
+We’ll pick the right terminal app, install a modern shell, add a stylish prompt, fonts, colors, and handy plugins.
+
+Follow along step by step, and customize as much or as little as you like. Let’s make your terminal awesome!`} />
+
+This guide walks you through building a beautiful, efficient terminal setup on macOS—from the terminal app and shell, to prompt, fonts, colors, and plugins.
+
+## Overview and Goals
+
+By the end of this guide, you will have:
+
+- A modern terminal app with tabs, panes, and profiles
+- A powerful shell (`zsh`) with autosuggestions and syntax highlighting
+- A stylish prompt with Git info and useful status indicators
+- Nerd Font and ligature support for pretty icons and smooth code rendering
+- A set of plugins and tools that make daily development more pleasant
+
+You can follow the whole guide or just pick the parts you like.
+
+## Prerequisites
+
+You should have:
+
+- A Mac running macOS 11+ (Big Sur or later is ideal, but most works on Catalina+)
+- Homebrew installed, or willingness to install it
+- Basic familiarity with the terminal (running commands, editing simple files)
+
+If you don’t have **Homebrew** yet, install it first:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Then follow the on-screen instructions. After installation, ensure `brew` works:
+
+```bash
+brew --version
+```
+
+## Step 1: Choose a Modern Terminal App
+
+The built-in **Terminal.app** is fine, but alternatives look and feel better and have nicer features.
+
+Popular choices:
+
+1. **iTerm2** (classic, very configurable)
+2. **Warp** (modern, AI-assisted, batteries-included)
+3. **Alacritty** or **WezTerm** (GPU-accelerated, very fast, config-driven)
+
+For this guide, we’ll assume **iTerm2**, because it’s powerful and widely used. You can adapt the color/font parts to other terminals.
+
+### Install iTerm2
+
+```bash
+brew install --cask iterm2
+```
+
+After install:
+
+- Open **iTerm2** from Applications or Spotlight
+- Right-click the Dock icon → **Options → Keep in Dock** if you like
+
+### Basic iTerm2 Settings
+
+Open **iTerm2 → Settings (Preferences)** and tweak:
+
+- **General → Closing**: Check "Confirm closing multiple sessions"
+- **Profiles → General**: Set **Working Directory** to "Reuse previous session's directory" if you prefer
+- **Profiles → Window**: Adjust transparency or blur if you like a glassy effect
+- **Profiles → Keys**: Ensure **Left/Right Option Key** acts as `+Esc` (handy for keybindings in vim/tmux, etc.)
+
+We’ll return here later for fonts and colors.
+
+## Step 2: Use zsh as Your Shell
+
+Modern macOS uses **zsh** as the default shell. Confirm with:
+
+```bash
+echo $SHELL
+```
+
+If you see something like `/bin/zsh`, you’re good.
+
+If not, and you’re still on `bash` or something else, list shells:
+
+```bash
+cat /etc/shells
+```
+
+Then change to zsh:
+
+```bash
+chsh -s /bin/zsh
+```
+
+Log out and log back in (or restart iTerm2) for the change to take effect.
+
+## Step 3: Install a Nerd Font (for Icons and Pretty Glyphs)
+
+Many modern prompts use icons from **Nerd Fonts**. Install one so your prompt and plugins don’t show weird boxes.
+
+A great choice is **MesloLGS Nerd Font** (the one Powerlevel10k recommends) or **FiraCode Nerd Font** (with ligatures).
+
+```bash
+brew tap homebrew/cask-fonts
+brew install --cask font-meslo-lg-nerd-font
+# or
+brew install --cask font-fira-code-nerd-font
+```
+
+### Set the Font in iTerm2
+
+1. Open **iTerm2 → Settings → Profiles → Text**
+2. Under **Font**, click **Change Font**
+3. Choose `MesloLGS NF` or `FiraCode Nerd Font`
+4. Enable **Use a different font for non-ASCII text** and pick the same font (optional but avoids mismatch)
+
+Now your terminal can display icons and powerline symbols correctly.
+
+## Step 4: Install Oh My Zsh (Zsh Framework)
+
+**Oh My Zsh** is a framework that makes managing your zsh configuration easier, with themes and plugins.
+
+Install Oh My Zsh:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+This will:
+
+- Back up your old `.zshrc` if you had one
+- Create a new `~/.zshrc`
+- Switch your shell to use Oh My Zsh
+
+After install, open a new iTerm2 window or run:
+
+```bash
+source ~/.zshrc
+```
+
+## Step 5: Install a Beautiful Prompt (Powerlevel10k)
+
+**Powerlevel10k** is a fast, feature-rich theme for zsh with Git info, icons, and more.
+
+### Install Powerlevel10k
+
+```bash
+brew install romkatv/powerlevel10k/powerlevel10k
+```
+
+Then add it as your theme in `~/.zshrc`.
+
+Open `~/.zshrc` in a text editor (use `nano` if unsure):
+
+```bash
+nano ~/.zshrc
+```
+
+Find the line with `ZSH_THEME=` and change it to:
+
+```bash
+ZSH_THEME="powerlevel10k/powerlevel10k"
+```
+
+Save and exit (`Ctrl+O`, `Enter`, then `Ctrl+X` in `nano`). Reload the config:
+
+```bash
+source ~/.zshrc
+```
+
+### Run the Powerlevel10k Configuration Wizard
+
+On first load, Powerlevel10k usually starts an interactive wizard. If it doesn’t, start it manually:
+
+```bash
+p10k configure
+```
+
+The wizard will:
+
+- Ask if you can see certain symbols (this checks that the Nerd Font works)
+- Let you choose prompt style (lean, classic, rainbow, etc.)
+- Let you pick which segments to show (time, Git status, exit code, etc.)
+
+Pick whatever looks good to you. You can always rerun `p10k configure` later.
+
+If you ever want to tweak manually, your config lives in `~/.p10k.zsh`.
+
+## Step 6: Add Useful Zsh Plugins
+
+Oh My Zsh supports plugins that add autocompletion, suggestions, and more.
+
+### Recommended Plugins
+
+- `git` – aliases and helpers for Git
+- `zsh-autosuggestions` – gray "ghost" suggestions as you type
+- `zsh-syntax-highlighting` – colors commands as you type
+- `fzf` – fuzzy finder (for history and files)
+
+### Install Plugins
+
+#### 1. zsh-autosuggestions
+
+```bash
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+```
+
+#### 2. zsh-syntax-highlighting
+
+```bash
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+```
+
+#### 3. fzf (and keybindings)
+
+```bash
+brew install fzf
+$(brew --prefix)/opt/fzf/install
+```
+
+During installation, answer `y` to enabling key bindings and completion if prompted.
+
+### Enable Plugins in `.zshrc`
+
+Open `~/.zshrc`:
+
+```bash
+nano ~/.zshrc
+```
+
+Find the line starting with `plugins=` and update it. For example:
+
+```bash
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  fzf
+)
+```
+
+**Important:** `zsh-syntax-highlighting` must generally be **loaded last**. If you later add more plugins, keep it at the end of the list.
+
+Save the file and reload:
+
+```bash
+source ~/.zshrc
+```
+
+Now you should see:
+
+- Light gray suggestions as you type (accept with `Right Arrow` or `End`)
+- Colored commands and arguments
+- Fuzzy history/file search with `Ctrl+R` (from fzf)
+
+## Step 7: Color Schemes and Transparency
+
+A good color scheme makes your terminal easier to read and more pleasant to look at.
+
+### Import a Color Scheme into iTerm2
+
+You can download popular schemes:
+
+- **Dracula**: <https://github.com/dracula/iterm>
+- **One Dark**: search "One Dark iTerm2 color scheme"
+- **Solarized Dark**: <https://ethanschoonover.com/solarized/>
+
+For Dracula, for example:
+
+1. Download the `.itermcolors` file from the repo
+2. In iTerm2, open **Settings → Profiles → Colors**
+3. Click **Color Presets… → Import…**
+4. Choose the downloaded `.itermcolors` file
+5. Select the new preset from the dropdown
+
+### Optional: Adjust Transparency
+
+In **Settings → Profiles → Window**:
+
+- Adjust the **Transparency** slider
+- Enable **Blur** to make background text less distracting
+
+Use transparency sparingly; too much makes text hard to read.
+
+## Step 8: Quality-of-Life Aliases and Functions
+
+You can make your terminal more productive with a few handy aliases in `~/.zshrc`.
+
+Open `~/.zshrc` and add something like this near the bottom:
+
+```bash
+# Navigation shortcuts
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# Listing
+alias ll='ls -lah'
+alias la='ls -A'
+
+# Git shortcuts
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+
+# Quick edit and reload of zsh config
+alias ez='nano ~/.zshrc'
+alias sz='source ~/.zshrc'
+```
+
+Save and reload:
+
+```bash
+source ~/.zshrc
+```
+
+Now `ll`, `gs`, etc., will just work.
+
+## Step 9: Optional – Tmux for Tabs and Panes
+
+If you like working with multiple panes and persistent sessions, **tmux** is great.
+
+Install tmux:
+
+```bash
+brew install tmux
+```
+
+Basic usage:
+
+- Start: `tmux`
+- Split window vertically: `Ctrl+B`, then `%`
+- Split window horizontally: `Ctrl+B`, then `"`
+- Switch panes: `Ctrl+B`, then arrow keys
+- Detach session: `Ctrl+B`, then `d`
+- List sessions: `tmux ls`
+- Attach session: `tmux attach -t <name>`
+
+You can theme tmux to match your colors, but that’s beyond this core guide. Look up popular configs like `gpakosz/.tmux` if you’re curious.
+
+## Step 10: Backup and Sync Your Config
+
+Once you like your setup, keep it safe.
+
+Key files to back up:
+
+- `~/.zshrc`
+- `~/.p10k.zsh` (Powerlevel10k config)
+- `~/.tmux.conf` (if using tmux)
+- Any custom scripts or functions in `~/.oh-my-zsh/custom/`
+
+You can create a simple Git repo to sync config across machines:
+
+```bash
+mkdir -p ~/dotfiles
+cd ~/dotfiles
+
+cp ~/.zshrc .
+cp ~/.p10k.zsh . 2>/dev/null || true
+cp ~/.tmux.conf . 2>/dev/null || true
+
+git init
+git add .
+git commit -m "My Mac terminal setup"
+```
+
+Push this to a private GitHub repo and pull it on other machines.
+
+## Common Pitfalls and Fixes
+
+### Icons or Symbols Look Broken
+
+- Ensure you selected a **Nerd Font** in iTerm2 (e.g., `MesloLGS NF`)
+- In **Profiles → Text**, set both main and non-ASCII fonts to the Nerd Font
+- Restart iTerm2 after changing fonts
+
+### Colors Look Weird or Washed Out
+
+- Confirm you applied the color preset in **Profiles → Colors**
+- Disable any conflicting themes in your shell that override colors (check `~/.zshrc`)
+
+### zsh-Autosuggestions Not Working
+
+- Make sure the plugin folder exists in `~/.oh-my-zsh/custom/plugins/zsh-autosuggestions`
+- Confirm `zsh-autosuggestions` is listed in the `plugins=(...)` line
+- Run `source ~/.zshrc`
+
+### zsh-Syntax-Highlighting Not Working
+
+- Ensure `zsh-syntax-highlighting` is the **last** plugin in the list
+- Confirm the cloned directory name matches exactly
+
+## Quick Recap Checklist
+
+You’ve set up an awesome Mac terminal if:
+
+- [ ] You’re using a modern terminal app (iTerm2, Warp, WezTerm, etc.)
+- [ ] Your shell is `zsh`
+- [ ] Oh My Zsh is installed and managing your config
+- [ ] Powerlevel10k is your theme, and the wizard completed successfully
+- [ ] A Nerd Font is set in your terminal, and icons show correctly
+- [ ] Plugins like autosuggestions, syntax highlighting, and fzf work
+- [ ] You have a color scheme you love and a few useful aliases
+
+If any box is unchecked, revisit that step in the guide.
+
+<Woz 
+  title="Recap" 
+  description="Make sure you really understand 🙃" 
+  prompt="Ask me 3 specific questions about optimizing and customizing a Mac terminal setup based on this guide, then ask me to propose an improved version of my current setup."
+/>
