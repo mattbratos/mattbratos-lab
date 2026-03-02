@@ -1,0 +1,203 @@
+---
+title: "how to setup mac mini for openclaw"
+description: "step-by-step guide to setting up a fresh mac mini"
+---
+
+## yo
+
+In this guide I'm gonna show you how to setup mac mini for openclaw. 
+You can do it in the claude if you want but I think mac mini is a little more convinitent. I like it spicy so I'm giving it the full access to all my data and I'm using my personall apple id. 
+
+why? 
+
+I tried doing it on a separate apple id just for the agent but it's much less powerfull. It just can do 10x more if it has access to you messages, signal, telgram, notes, reminders and so on. From what I understand the idea of openclaw is to be you personal agent that has access to all you data and you and only you shuold be able to talk with it. 
+
+Then if you want to have some external agents you can ask it to create sandboxed agents and let them deal with the external world. 
+
+But here is important displaimer - I have no idea what I'm doing, I'm just a vibecoder kid who tries to hack cool shit and share it with other hackers. 
+If you have no idea what I'm doing maybe first set it up in a sandboxed env or be ready to loose your data and someone broke into you system (I'm broke anyway so who cares)
+
+
+Let's go 🚀
+
+
+## clean up
+
+A fresh mac mini comes with a lot of usless shit. I'm starting with removing as much as I can. 
+
+- widges
+- dock 
+- wallpaper 
+
+## terminal (optional)
+
+This step is optional, I just hate to work on ugly terminal. 
+
+here is the full video of how to make your terminal look sexy. 
+
+## dependencies
+
+now we have to install all the things openclaw needs to work 
+
+
+
+### xcode & xcode cli tools
+
+go to the app store on you mac and just download xcode 
+
+### homebrew
+
+if you don't have [homebrew](https://brew.sh), get it now:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Verify it works:
+
+```bash
+brew --version
+```
+
+### Git
+
+macOS comes with Git, but let's get the latest version:
+
+```bash
+brew install git
+```
+
+Set up your identity:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+```
+
+### Node.js
+
+install Node.js using Homebrew:
+
+```bash
+brew install node
+```
+
+verify:
+
+```bash
+node --version
+npm --version
+```
+
+### pnpm
+
+pnpm is a fast, disk-efficient package manager. Install it:
+
+```bash
+npm install -g pnpm
+```
+
+Verify:
+
+```bash
+pnpm --version
+```
+
+### Cursor
+
+some kind of a coding editor might be usefull I'm going with [cursor](https://cursor.com/) 
+
+```bash
+brew install --cask cursor
+```
+
+Now we need some coding cli, I'm going with claude for vibes and thinging and codex for coding abilities 
+
+### claude code
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+Run it for the first time to set up authentication:
+
+```bash
+claude
+```
+
+Follow the prompts to log in.
+
+### Codex
+
+Install OpenAI's Codex CLI:
+
+```bash
+npm install -g @openai/codex
+```
+
+
+
+## openclaw 
+
+Now the fun part — getting [OpenClaw](https://openclaw.ai) running on your machine.
+
+```bash
+curl -fsSL https://openclaw.ai/install.sh
+```
+
+
+your openclaw is running, but it's generic. let's make it yours.
+
+### 2 ways - vibes vs ai 
+
+
+#### vibes 
+
+openclaw onboard is acutally pretty good and you can just follow that and configure it based on pure vibes. that how I did it the first time and it was fine. 
+
+
+#### ai 
+
+but then I figure out that maybe it would be a good idea to ask chatgpt (or other ai you talked to the most) to based on your talking history help you figure out what type of agent would be the best for you and what are you biggest problems that ai can solve (lack of hoes unfornutelly isn't solvable with ai... maybe one day 🙃. but if you solve it send me the gh repo or a link)
+
+I'm just using this prompt for chatgpt
+
+```txt
+Yo
+
+I'm setting up my personal ai agent that is practically an AGI. 
+I want you to help me configure him. 
+
+Based on everything you know about me write all the informations that you think this agent need. 
+
+I think you shuold write something like 
+
+### about user
+- who am I 
+- what do I like 
+- what I'm building 
+- what is my technological literacy (what tools/lagnuages/freamworks do I know and how well do I know them)
+- what is my education and experience
+- what tone do I like the most 
+- what are my biggest problems
+- all other imporant things about me that this agent might find useful
+
+
+### about the agent 
+- what problem he suppose to solve for me 
+- how can he help me 
+- what his personality shuold be 
+- what gender the agent shuold be 
+- propose 10 cool names for him/her 
+- what his SOUL shuold incolude (who should it be, what values should matter for it, and topic should be it be interested in)
+
+```
+
+
+
+## next steps 
+
+
+
+now you should have it configured and working but this is just the beginng of the fun.
+you can do sooo much more. In upcomming guides I'm gonna write abuot more usecases and cool things you can do with it. In the meantime you can join our discord, ask questions, follow me on x and show waht you've build. 
