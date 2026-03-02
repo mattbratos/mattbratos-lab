@@ -1,6 +1,261 @@
 ---
-title: how to make your terminal look sick"
+title: "pimp up your terminal"
 description: "step-by-step guide to setting up terminal on mac"
 ---
 
+## yo
+plain terminals are like dominatrix in casual clothes. still dangerous but you need something more to really feel something. so in this guide I'm gonna teach you how to be a cyber makeup artist. 
 
+
+
+## homebrew
+
+you probably already have this from the openclaw setup but if not, get it now:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+verify it works:
+
+```bash
+brew --version
+```
+
+
+
+
+## app choice
+
+first you need to choose the terminal app. 
+I'm going with ghostty but other options like hyper, iterm2 or warp are also cool. 
+
+so go and download [ghosty](https://ghostty.org/download) 
+
+
+install :
+
+```bash
+brew install --cask ghostty
+```
+
+open ghostty from Applications. right-click the Dock icon → **Options → Keep in Dock**.
+
+now let's configure it. create the config file:
+
+```bash
+mkdir -p ~/.config/ghostty
+nano ~/.config/ghostty/config
+```
+
+paste this in:
+
+```bash
+# Theme
+theme = GruvboxDark
+
+# Font (we install this in the next step)
+font-family = "MesloLGS Nerd Font"
+font-size = 14
+
+# Window
+window-padding-x = 10
+window-padding-y = 10
+
+# Transparency
+background-opacity = 0.95
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+```
+
+save with `Ctrl+O`, `Enter`, then `Ctrl+X`.
+
+ghostty auto-reloads when you change the config so you can tweak stuff and see it instantly. if you want to browse all the built-in themes run:
+
+```bash
+ghostty +list-themes
+```
+
+and change the `theme = ` line to whatever you like. I'm going with GruvboxDark but Dracula, TokyoNight and OneDark are all fire too.
+
+
+## nerd font
+
+you need a nerd font so all the cool icons and symbols display correctly instead of weird boxes.
+
+```bash
+brew install --cask font-meslo-lg-nerd-font
+```
+
+restart ghostty after this. the font we set in the config should now just work.
+
+if icons still look broken double check that the font name in your ghostty config matches exactly: `"MesloLGS Nerd Font"`.
+
+
+## oh my zsh
+
+oh my zsh is a framework that makes managing your zsh config easy. it gives you themes, plugins and a bunch of nice defaults.
+
+your mac already uses zsh as the default shell. you can verify with:
+
+```bash
+echo $SHELL
+```
+
+if you see `/bin/zsh` you're good. now install oh my zsh:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+this creates a new `~/.zshrc` file (it backs up the old one if you had one).
+
+
+## powerlevel10k
+
+this is the thing that makes your prompt look insane. it shows git info, icons, status indicators and it's crazy fast.
+
+install it:
+
+```bash
+brew install powerlevel10k
+```
+
+now open your `~/.zshrc`:
+
+```bash
+nano ~/.zshrc
+```
+
+find the line that says `ZSH_THEME=` and change it to:
+
+```bash
+ZSH_THEME="powerlevel10k/powerlevel10k"
+```
+
+save and reload:
+
+```bash
+source ~/.zshrc
+```
+
+the powerlevel10k configuration wizard will start automatically. it's gonna ask you stuff like:
+- can you see these symbols? (checking your nerd font works)
+- what prompt style you want (lean, classic, rainbow)
+- what segments to show (time, git status, exit code)
+
+just pick whatever looks good to you. you can always rerun it later:
+
+```bash
+p10k configure
+```
+
+your config gets saved to `~/.p10k.zsh` if you ever want to tweak it manually.
+
+
+## plugins
+
+now let's add the plugins that actually make the terminal useful and not just pretty.
+
+### autosuggestions
+
+this gives you gray "ghost" suggestions as you type based on your history. you accept them with the right arrow key. once you have this you can't go back.
+
+```bash
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+```
+
+### syntax highlighting
+
+this colors your commands as you type. green = valid command, red = typo. saves you from running broken commands.
+
+```bash
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+```
+
+### fzf (fuzzy finder)
+
+this gives you fuzzy search for your command history (`Ctrl+R`) and files. absolute game changer.
+
+```bash
+brew install fzf
+$(brew --prefix)/opt/fzf/install
+```
+
+say `y` to enabling key bindings and completion when it asks.
+
+### enable them
+
+open `~/.zshrc`:
+
+```bash
+nano ~/.zshrc
+```
+
+find the `plugins=` line and change it to:
+
+```bash
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+```
+
+important: `zsh-syntax-highlighting` has to be last in the list. always.
+
+save and reload:
+
+```bash
+source ~/.zshrc
+```
+
+now you should see:
+- gray suggestions as you type
+- colored commands (green = good, red = bad)
+- fuzzy history search with `Ctrl+R`
+
+
+## aliases (optional)
+
+if you wanna be even lazier (I do) you can add some shortcuts to your `~/.zshrc`. open it and add near the bottom:
+
+```bash
+# navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# listing
+alias ll='ls -lah'
+
+# git shortcuts
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+
+# quick edit zsh config
+alias ez='nano ~/.zshrc'
+alias sz='source ~/.zshrc'
+```
+
+save and reload:
+
+```bash
+source ~/.zshrc
+```
+
+
+## that's it
+
+your terminal now looks sick and is actually useful. you got:
+
+- 🔥 ghostty — fast, pretty terminal app
+- 🎨 powerlevel10k — beautiful prompt with git info
+- 👻 autosuggestions — gray ghost text as you type
+- 🌈 syntax highlighting — colors for your commands
+- 🔍 fzf — fuzzy search everything
+
+now go back to the [openclaw setup guide](/guides/openclaw-setup) and continue with the dependencies if you haven't already.
